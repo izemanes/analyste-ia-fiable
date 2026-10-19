@@ -1,0 +1,19 @@
+name: atelier_nord
+version: "1.0.0"
+config-version: 2
+profile: atelier_nord
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+
+models:
+  atelier_nord:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+seeds:
+  atelier_nord:
+    +schema: ""
