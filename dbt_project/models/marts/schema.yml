@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Un enregistrement par client réel (doublons fusionnés par e-mail normalisé)."
+    columns:
+      - name: customer_key
+        data_tests: [unique, not_null]
+      - name: email
+        data_tests: [unique, not_null]
+      - name: region
+        data_tests: [not_null]
+
+  - name: fct_order_lines
+    description: "Lignes de commandes valides. Source unique pour tous les indicateurs de la couche sémantique."
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests: [not_null]
+      - name: customer_key
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_key
+      - name: channel
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['web', 'app', 'marketplace']
+      - name: category
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Décoration', 'Cuisine', 'Luminaires', 'Textile', 'Jardin', 'Petit électroménager']
+      - name: order_year
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [2023, 2024, 2025]
+                quote: false
+      - name: net_ht
+        data_tests: [not_null]
+      - name: quantity
+        data_tests: [not_null]
