@@ -1,0 +1,10 @@
+warehouse.duckdb*
+data/raw/
+dbt_project/target/
+dbt_project/logs/
+logs/
+__pycache__/
+.pytest_cache/
+.env
+results/run-*/
+dbt_project/.user.yml

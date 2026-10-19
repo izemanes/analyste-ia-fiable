@@ -1,0 +1,6 @@
+duckdb>=1.1
+dbt-core>=1.10,<1.12
+dbt-duckdb>=1.10,<1.11
+pyyaml>=6.0
+anthropic>=0.40
+pytest>=8.0

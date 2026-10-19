@@ -1,0 +1,18 @@
+ANALYSTE IA FIABLE : MODE D'EMPLOI (Mac)
+
+1. Installe Python 3.12 si ce n'est pas déjà fait : python.org, rubrique Downloads, macOS.
+2. Double-clique sur le fichier  lancer-mac.command
+   - Si macOS refuse : clic droit sur le fichier, puis Ouvrir, puis Ouvrir.
+   - Si ça ne marche toujours pas : Réglages Système, Confidentialité et sécurité, tout en bas : « Ouvrir quand même ».
+3. Laisse faire. Le fichier installe tout, vérifie le projet, puis te propose de lancer la mesure
+   avec ton abonnement Claude Pro. Aucune clé API à créer.
+   - Appuie sur Entrée quand il le demande.
+   - Une page web s'ouvre pour te connecter à ton compte Claude : connecte-toi.
+   - Choisis « 1 » (un passage) pour la mesure complète.
+4. À la fin, le rapport s'ouvre dans ton navigateur.
+
+Si la limite de ton abonnement est atteinte en cours de route : ferme, attends quelques heures,
+puis relance le même fichier. Il propose de reprendre là où ça s'est arrêté.
+
+Un message « PROBLÈME » s'affiche ? Copie-le et envoie-le à Claude.
+Détails : docs/PAS_A_PAS.md
