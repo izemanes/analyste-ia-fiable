@@ -1,0 +1,13 @@
+{
+  "model": "claude-code (claude-opus-5-5)",
+  "modes": [
+    "raw",
+    "raw_doc",
+    "semantic"
+  ],
+  "runs": 1,
+  "n_questions": 60,
+  "provider": "claude-code",
+  "api_errors": 0,
+  "date": "2026-10-18 20:49"
+}
