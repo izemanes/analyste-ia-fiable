@@ -1,0 +1,11 @@
+{
+  "model": "fake",
+  "modes": [
+    "raw",
+    "raw_doc",
+    "semantic"
+  ],
+  "runs": 1,
+  "n_questions": 60,
+  "date": "2026-10-14 18:43"
+}
