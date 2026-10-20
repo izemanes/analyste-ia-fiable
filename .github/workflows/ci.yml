@@ -1,0 +1,17 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt && pip install -e .
+      - name: Générer les données fictives
+        run: python -m aia.cli generate
+      - name: Construire et tester les modèles dbt
+        run: dbt build --project-dir dbt_project --profiles-dir dbt_project
+      - name: Vérifier la cohérence du banc d'essai (aucun appel à une IA)
+        run: python -m pytest -q
