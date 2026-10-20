@@ -1,0 +1,105 @@
+# Couche sémantique d'Atelier Nord : chaque indicateur est défini UNE SEULE FOIS, ici.
+# L'IA ne choisit pas comment calculer ; elle choisit quoi demander. Le SQL est généré
+# de façon déterministe par src/aia/semantic.py à partir de ces définitions.
+table: analytics.fct_order_lines
+
+metrics:
+  revenue_ht:
+    label: "Chiffre d'affaires net HT"
+    sql: "SUM(net_ht)"
+    unit: EUR
+    description: >
+      Ventes hors taxes, après remises, nettes des retours remboursés. Commandes valides uniquement
+      (livrées, expédiées ou payées ; annulées et tests exclus). C'est le sens par défaut de « CA »,
+      « chiffre d'affaires » ou « ventes ».
+    synonyms: ["CA", "chiffre d'affaires", "ventes", "revenu"]
+  orders:
+    label: "Nombre de commandes"
+    sql: "COUNT(DISTINCT order_id)"
+    unit: count
+    description: "Nombre de commandes valides."
+    synonyms: ["commandes", "nombre de ventes"]
+  units_sold:
+    label: "Unités vendues"
+    sql: "SUM(quantity)"
+    unit: count
+    description: "Quantités vendues (brutes, avant retours) sur les commandes valides."
+    synonyms: ["quantités", "articles vendus", "volumes"]
+  aov_ht:
+    label: "Panier moyen HT"
+    sql: "SUM(net_ht) / COUNT(DISTINCT order_id)"
+    unit: EUR
+    description: "CA net HT divisé par le nombre de commandes valides."
+    synonyms: ["panier moyen", "ticket moyen"]
+  gross_margin:
+    label: "Marge brute"
+    sql: "SUM(net_ht) - SUM(cogs_net)"
+    unit: EUR
+    description: >
+      CA net HT moins le coût d'achat des produits effectivement conservés par les clients
+      (les produits retournés sont remis en stock). Ce n'est PAS un bénéfice net.
+    synonyms: ["marge"]
+  gross_margin_rate:
+    label: "Taux de marge brute"
+    sql: "(SUM(net_ht) - SUM(cogs_net)) / SUM(net_ht)"
+    unit: ratio
+    description: "Marge brute / CA net HT (valeur entre 0 et 1)."
+    synonyms: ["taux de marge", "marge en %"]
+  active_customers:
+    label: "Clients actifs"
+    sql: "COUNT(DISTINCT customer_key)"
+    unit: count
+    description: >
+      Clients distincts (doublons fusionnés par e-mail) ayant au moins une commande valide
+      sur la période.
+    synonyms: ["clients", "acheteurs", "nombre de clients"]
+  returned_units:
+    label: "Unités retournées"
+    sql: "SUM(refunded_qty)"
+    unit: count
+    description: "Quantités retournées et remboursées, rattachées à la date de la commande d'origine."
+    synonyms: ["retours"]
+  return_rate:
+    label: "Taux de retour"
+    sql: "SUM(refunded_qty) * 1.0 / SUM(quantity)"
+    unit: ratio
+    description: "Unités retournées / unités vendues (valeur entre 0 et 1)."
+    synonyms: ["taux de retours"]
+
+dimensions:
+  order_date:
+    type: date
+    sql: order_date
+    description: "Date de la commande (format AAAA-MM-JJ). Utiliser les opérateurs >=, <, between pour une période."
+  order_month:
+    type: text
+    sql: order_month
+    description: "Mois de la commande au format AAAA-MM (ex. 2025-03)."
+  order_quarter:
+    type: text
+    sql: order_quarter
+    description: "Trimestre de la commande au format AAAA-Qn (ex. 2025-Q4)."
+  order_year:
+    type: integer
+    sql: order_year
+    description: "Année de la commande (2023, 2024 ou 2025)."
+  region:
+    type: text
+    sql: region
+    description: "Région du client, normalisée. « Inconnue » si non renseignée."
+    values: ["Île-de-France", "Auvergne-Rhône-Alpes", "Provence-Alpes-Côte d'Azur", "Occitanie",
+             "Nouvelle-Aquitaine", "Bretagne", "Hauts-de-France", "Grand Est", "Inconnue"]
+  category:
+    type: text
+    sql: category
+    description: "Catégorie du produit."
+    values: ["Décoration", "Cuisine", "Luminaires", "Textile", "Jardin", "Petit électroménager"]
+  channel:
+    type: text
+    sql: channel
+    description: "Canal de vente."
+    values: ["web", "app", "marketplace"]
+  product_name:
+    type: text
+    sql: product_name
+    description: "Nom du produit."
